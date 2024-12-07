@@ -34,7 +34,7 @@ fn main() -> Result<()> {
     let mut right_backward_pin = gpio.get(RIGHT_BACKWARD)?.into_output();
 
     loop {
-        if poll(Duration::from_millis(200))? {
+        if poll(Duration::from_millis(100))? {
             // Read an event
             if let Event::Key(KeyEvent { code, .. }) = read()? {
                 match code {
