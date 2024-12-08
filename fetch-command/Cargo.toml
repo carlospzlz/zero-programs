@@ -1,0 +1,17 @@
+[package]
+name = "fetch-command"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "serve-command"
+path = "src/serve_command.rs"
+
+[[bin]]
+name = "fetch-command"
+path = "src/fetch_command.rs"
+
+[dependencies]
+axum = "0.7.9"
+reqwest = "0.12.9"
+tokio = { version = "1.42.0", features = ["io-util", "macros", "rt-multi-thread"] }
