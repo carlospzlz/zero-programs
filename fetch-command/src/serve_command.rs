@@ -2,12 +2,14 @@ use axum::{routing::get, Router};
 use std::io;
 use std::io::Write;
 use std::sync::{Arc, Mutex};
+use std::time::Duration;
 use tokio::sync::watch;
+use tokio::time::sleep;
 
 #[tokio::main]
 async fn main() {
     // Shared state: A watch channel to broadcast the current message
-    let (tx, rx) = watch::channel(String::from("Hello, World!"));
+    let (tx, rx) = watch::channel(String::from("idle"));
     let rx = Arc::new(Mutex::new(rx));
 
     println!("Server running at http://0.0.0.0:3000/");
@@ -33,6 +35,10 @@ async fn main() {
             if !command.is_empty() {
                 tx_clone
                     .send(command.to_string())
+                    .expect("Failed to send command");
+                sleep(Duration::from_secs(1)).await;
+                tx_clone
+                    .send(String::from("idle"))
                     .expect("Failed to send command");
             }
         }

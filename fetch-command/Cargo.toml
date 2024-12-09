@@ -14,4 +14,6 @@ path = "src/fetch_command.rs"
 [dependencies]
 axum = "0.7.9"
 reqwest = "0.12.9"
+rppal = "0.20.0"
 tokio = { version = "1.42.0", features = ["io-util", "macros", "rt-multi-thread"] }
+openssl = { version = "0.10", features = ["vendored"] }
