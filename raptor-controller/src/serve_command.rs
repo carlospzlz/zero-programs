@@ -23,7 +23,7 @@ async fn main() {
             for ev in device.fetch_events().unwrap() {
                 match ev.kind() {
                     InputEventKind::AbsAxis(axis) => match axis {
-                        AbsoluteAxisType::ABS_X => x_value = ev.value(),
+                        AbsoluteAxisType::ABS_RX => x_value = ev.value(),
                         AbsoluteAxisType::ABS_Y => y_value = ev.value(),
                         _ => (),
                     },
