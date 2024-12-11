@@ -18,7 +18,9 @@ path = "src/fetch_command.rs"
 [dependencies]
 axum = "0.7.9"
 evdev = "0.12.2"
-reqwest = "0.12.9"
+reqwest = { version = "0.12.9", features = ["json"] }
 rppal = "0.22.1"
 tokio = { version = "1.42.0", features = ["macros", "rt-multi-thread", "io-util"] }
 openssl = { version = "0.10", features = ["vendored"] }
+serde_json = "1.0.133"
+chrono = "0.4.39"

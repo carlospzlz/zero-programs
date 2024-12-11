@@ -1,4 +1,5 @@
-use axum::{routing::get, Router};
+use axum::{routing::get, Json, Router};
+use chrono::{FixedOffset, Utc};
 use evdev::{AbsoluteAxisType, Device, InputEventKind};
 use std::sync::{Arc, Mutex};
 use tokio::sync::watch;
@@ -11,6 +12,9 @@ async fn main() {
 
     let device_path = "/dev/input/event17";
     let mut device = Device::open(device_path).expect("Failed to open device");
+
+    // For timestamp
+    let utc_plus_one = FixedOffset::east_opt(3600).unwrap(); // 3600 seconds = 1 hour.
 
     println!("Server running at http://0.0.0.0:3000/");
 
@@ -60,7 +64,12 @@ async fn main() {
         get({
             move || {
                 let rx = rx.clone();
-                async move { rx.lock().unwrap().borrow().clone() }
+                // Create JSON
+                let dict = serde_json::json!({
+                    "command": rx.lock().unwrap().borrow().clone(),
+                    "timestamp": Utc::now().with_timezone(&utc_plus_one).to_rfc3339(),
+                });
+                async move { Json(dict.clone()) }
             }
         }),
     );
