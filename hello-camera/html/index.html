@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Image Stream</title>
+</head>
+<body>
+    <h1>Base64 Image Stream</h1>
+    <img id="video" src="" alt="Streaming Image" />
+
+    <script>
+        // Create an EventSource to listen for SSE events
+        const eventSource = new EventSource("http://127.0.0.1:5000/video");
+
+        eventSource.onmessage = function(event) {
+            // Decode the base64 string received in the event
+            const imgElement = document.getElementById("video");
+            imgElement.src = "data:image/jpeg;base64," + event.data;  // Use the base64 data as image source
+        };
+
+        eventSource.onerror = function(event) {
+            console.error("Error with SSE connection:", event);
+        };
+    </script>
+</body>
+</html>
