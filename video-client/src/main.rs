@@ -1,27 +1,30 @@
+use std::env;
 use std::io::Read;
 use std::io::Write;
 use std::net::TcpStream;
-use std::process::{Command, Stdio};
+use std::process;
 use std::thread::sleep;
 use std::time::Duration;
 
 fn main() -> std::io::Result<()> {
-    // Remote server address (update this to your server's IP and port)
-    //let remote_host = "192.168.1.10"; // Replace with the remote server's IP
-    let remote_host = "192.168.1.10"; // Replace with the remote server's IP
-    let remote_port = 5000;
-    let remote_addr = format!("{remote_host}:{remote_port}");
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        println!("Usage: {} <hostname:port>", args[0]);
+        process::exit(0);
+    }
 
-    println!("Connecting to server at {}", remote_addr);
+    let server_address = &args[1];
+
+    println!("Connecting to server at {}", server_address);
 
     // Establish a TCP connection to the remote server
     loop {
-        match TcpStream::connect(remote_addr.clone()) {
+        match TcpStream::connect(server_address.clone()) {
             Ok(mut stream) => {
                 println!("Connected to server!");
 
                 // Start the libcamera-vid process to capture video
-                let mut child = Command::new("libcamera-vid")
+                let mut child = process::Command::new("libcamera-vid")
                     .args([
                         "-t", "0", // Stream indefinitely
                         "--width", "640", // Video width
@@ -29,8 +32,8 @@ fn main() -> std::io::Result<()> {
                         "--codec", "h264", // Use H.264 codec
                         "-o", "-", // Output to stdout
                     ])
-                    .stdout(Stdio::piped())
-                    .stderr(Stdio::null())
+                    .stdout(process::Stdio::piped())
+                    .stderr(process::Stdio::null())
                     .spawn()
                     .expect("Failed to start libcamera-vid");
 
@@ -52,7 +55,7 @@ fn main() -> std::io::Result<()> {
                 println!("Video stream ended.");
             }
             _ => {
-                println!("{} is not reachable...", remote_addr);
+                println!("{} is not reachable...", server_address);
                 sleep(Duration::from_secs(1));
             }
         }
