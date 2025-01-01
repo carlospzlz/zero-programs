@@ -33,22 +33,30 @@ async fn main() {
                     },
                     _ => (),
                 }
-                let x_displacement = (x_value - 128).abs();
-                let y_displacement = (y_value - 128).abs();
-                let command = if x_displacement > y_displacement {
+                let command = if y_value < 128 {
                     if x_value < 128 {
-                        "spin l"
+                        "forward_left"
+                    } else if x_value > 128 {
+                        "forward_right"
                     } else {
-                        "spin r"
-                    }
-                } else if y_displacement > x_displacement {
-                    if y_value < 128 {
                         "forward"
+                    }
+                } else if y_value > 128 {
+                    if x_value < 128 {
+                        "backward_left"
+                    } else if x_value > 128 {
+                        "backward_right"
                     } else {
                         "backward"
                     }
                 } else {
-                    "idle"
+                    if x_value < 128 {
+                        "left"
+                    } else if x_value > 128 {
+                        "right"
+                    } else {
+                        "idle"
+                    }
                 };
                 // Send to channel
                 tx_clone

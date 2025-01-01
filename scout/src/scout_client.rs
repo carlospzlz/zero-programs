@@ -22,16 +22,16 @@ const DIRECTION_RIGHT: u8 = 17;
 async fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("Usage: {} <URL>", args[0]);
+        println!("Usage: {} <hostname:port>", args[0]);
         process::exit(0);
     }
 
-    let url = &format!("{}/command", args[1]);
+    let server_address = &format!("http://{}/command", args[1]);
 
     // For timestamp
     let utc_plus_one = FixedOffset::east_opt(3600).unwrap(); // 3600 seconds = 1 hour.
 
-    println!("Starting client to fetch updates from: {}", url);
+    println!("Starting client to fetch updates from: {}", server_address);
 
     let gpio = Gpio::new().expect("Failed to initialize GPIO");
 
@@ -44,7 +44,7 @@ async fn main() -> Result<()> {
 
     loop {
         // Send a GET request
-        match reqwest::get(url).await {
+        match reqwest::get(server_address).await {
             Ok(response) => {
                 if response.status().is_success() {
                     // Parse the response body as JSON
@@ -89,17 +89,67 @@ async fn main() -> Result<()> {
                             back_engine_backward_pin.set_high();
                             front_engine_backward_pin.set_high();
                         }
-                        "spin r" => {
-                            // Make sure no forward pins are enabled
+                        "right" => {
+                            // Set engines to low
+                            back_engine_backward_pin.set_low();
+                            back_engine_forward_pin.set_low();
+                            front_engine_backward_pin.set_low();
+                            front_engine_forward_pin.set_low();
+                            // Make sure left is low
                             direction_left_pin.set_low();
                             // Right!
                             direction_right_pin.set_high();
                         }
-                        "spin l" => {
-                            // Make sure no forward pins are enabled
+                        "left" => {
+                            // Set engines to low
+                            back_engine_backward_pin.set_low();
+                            back_engine_forward_pin.set_low();
+                            front_engine_backward_pin.set_low();
+                            front_engine_forward_pin.set_low();
+                            // Make sure right is low
                             direction_right_pin.set_low();
                             // Left!
                             direction_left_pin.set_high();
+                        }
+                        "forward_left" => {
+                            // Make sure non-relevant pins are low
+                            back_engine_backward_pin.set_low();
+                            front_engine_backward_pin.set_low();
+                            direction_right_pin.set_low();
+                            // Forward Left!
+                            back_engine_forward_pin.set_high();
+                            front_engine_forward_pin.set_high();
+                            direction_left_pin.set_high();
+                        }
+                        "forward_right" => {
+                            // Make sure non-relevant pins are low
+                            back_engine_backward_pin.set_low();
+                            front_engine_backward_pin.set_low();
+                            direction_left_pin.set_low();
+                            // Forward Left!
+                            back_engine_forward_pin.set_high();
+                            front_engine_forward_pin.set_high();
+                            direction_right_pin.set_high();
+                        }
+                        "backward_left" => {
+                            // Make sure non-relevant pins are low
+                            back_engine_forward_pin.set_low();
+                            front_engine_forward_pin.set_low();
+                            direction_right_pin.set_low();
+                            // Backward Left!
+                            back_engine_backward_pin.set_high();
+                            front_engine_backward_pin.set_high();
+                            direction_left_pin.set_high();
+                        }
+                        "backward_right" => {
+                            // Make sure non-relevant pins are low
+                            back_engine_forward_pin.set_low();
+                            front_engine_forward_pin.set_low();
+                            direction_left_pin.set_low();
+                            // Backward Right!
+                            back_engine_backward_pin.set_high();
+                            front_engine_backward_pin.set_high();
+                            direction_right_pin.set_high();
                         }
                         _ => {
                             sleep(Duration::from_millis(20)).await;
