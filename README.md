@@ -67,3 +67,9 @@ ssh to your RPI Zero v2 and launch shell, then request commands.
 This is similar to the previous one, but it uses an event polling mechanism
 so the robot can be controlled with the keyboard.
 
+https://github.com/user-attachments/assets/28be668c-8902-45d8-b643-d09e0d73ac31
+
+
+
+
+
