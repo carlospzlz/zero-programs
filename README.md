@@ -1,4 +1,4 @@
-# Zero programs
+# Zero Programs
 
 A set of small programs targetting the Raspberry Pi Zero (v1 and v2) to learn
 about various topics like cross-compilation, robotics, motor drivers and rust.
@@ -62,14 +62,32 @@ ssh to your RPI Zero v2 and launch shell, then request commands.
 ...
 ```
 
-## Event controller
+## Event Controller
 
 This is similar to the previous one, but it uses an event polling mechanism
 so the robot can be controlled with the keyboard.
 
 https://github.com/user-attachments/assets/28be668c-8902-45d8-b643-d09e0d73ac31
 
+## Fetch Command
+
+In this example, we introduce the desired system architecture, which involves
+sending and receiving commands over a network.
+
+This is achieved with two components:
+
+1. **Server**: Runs on a reachable host and serves commands on a specific port.
+2. **Client**: Connects to the host to fetch commands from the specified port.
+
+## Raptor Controller
+
+Using a PS4 controller to operate the robot.
+
+![](resources/raptor_controller.jpg)
 
 
+## Hello Camera
 
+## Video Client
 
+## Scout
