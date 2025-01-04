@@ -1,6 +1,7 @@
+use base64::engine::general_purpose::STANDARD as BASE64;
+use base64::engine::Engine as _;
 use futures::StreamExt;
 use rscam::{Camera, Config};
-use std::convert::Infallible;
 use std::time::Duration;
 use tokio::sync::watch;
 use tokio_stream::wrappers::WatchStream;
@@ -69,7 +70,7 @@ fn rx_stream(
         async {
             Some(Ok(warp::sse::Event::default()
                 .id("frame")
-                .data(base64::encode(frame)))) // Encode frame as Base64
+                .data(BASE64.encode(frame)))) // Encode frame as Base64
         }
     })
 }
