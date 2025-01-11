@@ -27,8 +27,8 @@ fn main() -> std::io::Result<()> {
                 let mut child = process::Command::new("libcamera-vid")
                     .args([
                         "-t", "0", // Stream indefinitely
-                        "--width", "640", // Video width
-                        "--height", "480", // Video height
+                        "--width", "1920", // Video width
+                        "--height", "1080", // Video height
                         "--codec", "h264", // Use H.264 codec
                         "-o", "-", // Output to stdout
                     ])
