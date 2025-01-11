@@ -85,9 +85,68 @@ Using a PS4 controller to operate the robot.
 
 ![](resources/raptor_controller.jpg)
 
-
 ## Hello Camera
+
+This small example explores how to read frames from a camera using rust. It
+uses rscam, a wrapper for v4l2.
+
+After running the program, `index.html` could be opened in a browser and the
+camera feed should be displayed.
+
+Unfortunately, v4l2 gives problems in the RPI platform with the RPI camera,
+and a different approach was taken.
 
 ## Video Client
 
+This uses a subprocess to run `libcamera-vid` to get frames from the RPI camera,
+which seems to work fine.
+
+From now on, we will be working with the RPI Zero v1, so to cross-compile the
+binary you should use a different toolchain:
+
+```
+~/.cargo/bin/cross build --target arm-unknown-linux-gnueabihf --release
+```
+
+And then, after deploying the binary to the RPI, you should be able to run the
+program:
+
+```
+./video-client <hostname:port>
+```
+
+This will try to connect to a server under that hostname and port, and send
+video feedback.
+
+A simple server could be started with `netcat` and `ffplay`:
+
+```
+nc -lvp <port> | ffplay -
+```
+
 ## Scout
+
+This concluding program tries to apply the gained knowledge to build a remotely
+controlled wheeled robot based on an RC chassis.
+
+![](resources/scout_proto_01.jpg)
+
+The main hardward components are:
+ - 2x L298N motor controllers
+ - LTE 4G dongle
+ - Power Bank
+ - Raspberry Pi Zero v1
+ - Raspbery Pi Camera module
+
+After using a cardboard for prototyping, a solid plastic base was 3D printed.
+
+![](resources/scout_proto_02.jpg)
+
+The robot functions as a client, retrieving commands and transmitting video
+feedback to a designated server. This design choice was primarily influenced by
+the limitations of 4G connectivity, which does not easily allow opening ports
+for incoming connections. Using this approach, the robot can be operated from a
+base station, publishing commands and monitoring the video stream.
+
+
+*Video at x2*
