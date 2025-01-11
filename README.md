@@ -149,4 +149,6 @@ for incoming connections. Using this approach, the robot can be operated from a
 base station, publishing commands and monitoring the video stream.
 
 
+https://github.com/user-attachments/assets/1294a4c8-350e-463d-bbb3-7362568c1c9b
+
 *Video at x2*
