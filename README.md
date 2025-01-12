@@ -33,7 +33,7 @@ At this point, you are all set up to run the program:
 ./hello-gpio
 ```
 
-An GPIO hat with LEDs indicators was added to easily observe/debug the outcome
+A GPIO hat with LED indicators was added to easily observe/debug the outcome
 of the program.
 
 <p align="middle">
@@ -48,8 +48,8 @@ The hardware for this example adds a couple of wheeled motors and a motor driver
 The cross-compilation and deploy workflow is the same as exposed in the previous
 example.
 
-It implements a basic shell that allows to send commands to robot. You can
-ssh to your RPI Zero v2 and launch shell, then request commands.
+It implements a basic shell that allows to send commands to the robot. You can
+ssh to your RPI Zero v2 and launch the interactive shell, then request commands.
 
 ```
 ./interactive-bot
@@ -138,17 +138,19 @@ The main hardward components are:
  - Raspberry Pi Zero v1
  - Raspbery Pi Camera module
 
-After using a cardboard for prototyping, a solid plastic base was 3D printed.
-
 ![](resources/scout_proto_02.jpg)
+
+After using a cardboard for prototyping, a solid plastic base was 3D printed.
 
 The robot functions as a client, retrieving commands and transmitting video
 feedback to a designated server. This design choice was primarily influenced by
 the limitations of 4G connectivity, which does not easily allow opening ports
-for incoming connections. Using this approach, the robot can be operated from a
-base station, publishing commands and monitoring the video stream.
+for incoming connections. Using this approach, the robot can be teleoperated from
+a base station, publishing commands and monitoring the video stream.
 
 
 https://github.com/user-attachments/assets/1294a4c8-350e-463d-bbb3-7362568c1c9b
 
-*Video at x2*
+*Video at x2 speed*
+
+See [full video](https://youtu.be/zcliIOB_mTQ?si=5gPmCUpk-OkvYqsR).
